@@ -46,7 +46,23 @@ class WebSocketServerType implements ServerTypeInterface
         /** @var $loop \React\EventLoop\LoopInterface */
 
         $this->loop = \React\EventLoop\Factory::create();
-        
+
+        // Enable ZMQ Listener.
+        // Requires , "react/zmq" package.
+        $zmq = $this->getContainer()->getParameter('jdare_clank.zmq_configuration');
+        if ($zmq['enabled']) {
+            if (!class_exists('\ZMQContext')) {
+                throw new \Exception("Could not find ZMQContext, did you install the zmq bindings for PHP?");
+            }
+            // Listen for the web server to make a ZeroMQ push after an ajax request
+            $context = new \React\ZMQ\Context($this->loop);
+            $pull = $context->getSocket(\ZMQ::SOCKET_PULL);
+            $bind = "tcp://127.0.0.1:{$zmq['port']}";
+            echo "\nListening to ZMQ messages on $bind\n";
+            $pull->bind($bind); // Binding to 127.0.0.1 means the only client that can connect is itself
+            $pull->on('message', array($this->getContainer()->get("jdare_clank.clank_app"), 'onZMQMessage'));
+        }
+
         $this->socket = new \React\Socket\Server($this->loop);
 
         if ($this->host)
@@ -120,7 +136,7 @@ class WebSocketServerType implements ServerTypeInterface
 
     public function getAddress()
     {
-        return (($this->host)?$this->host:"*") . ":" . $this->port;
+        return (($this->host)?$this->host:"0.0.0.0") . ":" . $this->port;
     }
 
     public function getName()

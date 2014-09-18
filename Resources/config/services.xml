@@ -6,8 +6,10 @@
 
     <parameters>
         <parameter key="jdare_clank.web_socket_server.class">JDare\ClankBundle\Server\Type\WebSocketServerType</parameter>
+        <parameter key="jdare_clank.zmq_dispatcher.class">JDare\ClankBundle\Zmq\ZmqDispatcher</parameter>
         <parameter key="jdare_clank.web_socket_server.port" />
         <parameter key="jdare_clank.web_socket_server.host" />
+
 
         <parameter key="jdare_clank.periodic_services" type="collection" />
             <!-- Sample Periodic Service, being executed every 5000ms (5s). Uncomment to enable -->
@@ -29,6 +31,11 @@
             </parameter>-->
 
         <parameter key="jdare_clank.session_handler">null</parameter>
+
+        <parameter key="jdare_clank.zmq_configuration" type="collection">
+            <parameter key="enabled">null</parameter>
+            <parameter key="port">5555</parameter>
+        </parameter>
 
         <parameter key="jdare_clank.servers" type="collection">
             <parameter>jdare_clank.web_socket_server</parameter>
@@ -62,6 +69,13 @@
             </call>
         </service>
 
+        <service id="jdare_clank.zmq.dispatcher" class="%jdare_clank.zmq_dispatcher.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+
         <service id="jdare_clank.clank_app" class="JDare\ClankBundle\Server\App\ClankApp">
             <argument type="service" id="jdare_clank.clank_handler_rpc" />
             <argument type="service" id="jdare_clank.clank_handler_topic" />
@@ -91,6 +105,7 @@
             <tag name="kernel.event_listener" event="clank.client.disconnected" method="onClientDisconnect" />
             <tag name="kernel.event_listener" event="clank.client.error" method="onClientError" />
         </service>
+
 
         <!-- Sample Services examples -->
         <service id="jdare_clank.topic_sample_service" class="JDare\ClankBundle\Topic\AcmeTopic" />

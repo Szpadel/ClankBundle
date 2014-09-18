@@ -2,6 +2,7 @@
 
 namespace JDare\ClankBundle\Server\App;
 
+use JDare\ClankBundle\Zmq\ZmqMessage;
 use Ratchet\ConnectionInterface as Conn;
 use Ratchet\Wamp\WampServerInterface;
 
@@ -53,6 +54,16 @@ class ClankApp implements WampServerInterface {
 
         $event->setException($e);
         $this->eventDispatcher->dispatch("clank.client.error", $event);
+    }
+
+
+    public function onZMQMessage ($entry) {
+        $zmqMessage = json_decode($entry, true);
+
+        if (isset($zmqMessage['name']) && isset($zmqMessage['data'])) {
+
+            $this->topicHandler->onZMQMessage(new ZmqMessage($zmqMessage['name'], $zmqMessage['data']));
+        }
     }
 
 }

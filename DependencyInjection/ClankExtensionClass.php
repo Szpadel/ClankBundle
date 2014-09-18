@@ -58,6 +58,11 @@ class ClankExtensionClass extends Extension
             $this->setupSessionHandler($config['session_handler']);
         }
 
+        if (isset($config['zmq']) && $config['zmq'])
+        {
+            $this->setupZMQ($config['zmq']);
+        }
+
     }
 
     private function setupWebSocketServer($config)
@@ -94,6 +99,14 @@ class ClankExtensionClass extends Extension
     private function setupPeriodicServices($config)
     {
         $this->container->setParameter('jdare_clank.periodic_services', $config);
+    }
+
+    private function setupZMQ($config) {
+        $config = array_merge(array(
+            'port' => 5555, // Default ZMQ port.
+            'enabled' => false
+        ), $config);
+        $this->container->setParameter('jdare_clank.zmq_configuration', $config);
     }
 
     public function getAlias()

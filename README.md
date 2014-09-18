@@ -18,6 +18,7 @@ Resources
 * [Periodic Services](Resources/docs/PeriodicSetup.md)(functions to be run every x seconds with the IO loop.)
 * [Session Management](Resources/docs/SessionSetup.md)
 * [Clank Server Events](Resources/docs/ClankEvents.md)
+* [ZMQ Integration](Resources/docs/ZMQIntegration.md)
 
 Code Cookbook
 --------------
