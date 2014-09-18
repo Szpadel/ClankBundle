@@ -21,6 +21,12 @@ And the php bindings:
 
 ## Configuration
 
+
+Add `"react/zmq": "@stable"` to the `require` section of your composer.json file, and run
+`composer update react/zmq`.
+
+
+
 Add ZMQ as enabled:
 
 ```yaml
