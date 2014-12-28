@@ -5,6 +5,7 @@ namespace JDare\ClankBundle\Topic;
 use JDare\ClankBundle\Topic\TopicInterface;
 
 use Ratchet\ConnectionInterface as Conn;
+use Ratchet\Wamp\Topic;
 
 class AcmeTopic implements TopicInterface
 {
@@ -57,4 +58,12 @@ class AcmeTopic implements TopicInterface
         ));
     }
 
+    /**
+     * @param Topic $topic
+     * @return void
+     */
+    public function setTopic(Topic $topic)
+    {
+        $this->topic = $topic;
+    }
 }
