@@ -46,6 +46,10 @@ class ClankApp implements WampServerInterface {
     public function onClose(Conn $conn) {
         $event = new ClientEvent($conn, ClientEvent::$disconnected);
         $this->eventDispatcher->dispatch("clank.client.disconnected", $event);
+        foreach ($conn->WAMP->subscriptions as $subscription) {
+            $this->onUnSubscribe($conn, $subscription);
+            $subscription->remove($conn);
+        }
     }
 
     public function onError(Conn $conn, \Exception $e) {
