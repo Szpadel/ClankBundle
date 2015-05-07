@@ -54,10 +54,15 @@ class WebSocketServerType implements ServerTypeInterface
             if (!class_exists('\ZMQContext')) {
                 throw new \Exception("Could not find ZMQContext, did you install the zmq bindings for PHP?");
             }
+            
+            if (!isset($zmq['host'])) {
+                $zmq['host'] = "127.0.0.1";
+            }
+            
             // Listen for the web server to make a ZeroMQ push after an ajax request
             $context = new \React\ZMQ\Context($this->loop);
             $pull = $context->getSocket(\ZMQ::SOCKET_PULL);
-            $bind = "tcp://127.0.0.1:{$zmq['port']}";
+            $bind = "tcp://{$zmq['host']}:{$zmq['port']}";
             echo "\nListening to ZMQ messages on $bind\n";
             $pull->bind($bind); // Binding to 127.0.0.1 means the only client that can connect is itself
             $pull->on('message', array($this->getContainer()->get("jdare_clank.clank_app"), 'onZMQMessage'));
