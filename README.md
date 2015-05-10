@@ -38,7 +38,7 @@ Add the following to your composer.json
 ```javascript
 {
     "require": {
-        "jdare/clank-bundle": "0.1.*"
+        "szpadel/clank-bundle": "0.1.*"
     }
 }
 ```
