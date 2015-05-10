@@ -47,6 +47,10 @@ class ClankApp implements WampServerInterface {
     public function onClose(Conn $conn) {
         $event = new ClientEvent($conn, ClientEvent::$disconnected);
         $this->eventDispatcher->dispatch("clank.client.disconnected", $event);
+        foreach ($conn->WAMP->subscriptions as $subscription) {
+            $this->onUnSubscribe($conn, $subscription);
+            $subscription->remove($conn);
+        }
     }
 
     public function onError(Conn $conn, \Exception $e) {
@@ -55,7 +59,6 @@ class ClankApp implements WampServerInterface {
         $event->setException($e);
         $this->eventDispatcher->dispatch("clank.client.error", $event);
     }
-
 
     public function onZMQMessage ($entry) {
         $zmqMessage = json_decode($entry, true);
@@ -67,3 +70,4 @@ class ClankApp implements WampServerInterface {
     }
 
 }
+
