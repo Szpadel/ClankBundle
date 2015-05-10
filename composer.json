@@ -1,21 +1,21 @@
 {
-    "name": "jdare/clank-bundle",
+    "name": "achilleash/clank-bundle",
     "type": "symfony-bundle",
     "description": "Symfony ClankBundle",
     "keywords": ["Web Socket Application"],
-    "homepage": "https://github.com/JDare/ClankBundle",
+    "homepage": "https://github.com/AchilleAsh/ClankBundle",
     "license": "MIT",
     "authors": [
         {
-            "name": "Jeremy Dare",
-            "email": "jeremy.d.dare@gmail.com"
+            "name": "T. Perez",
+            "email": "achille.ash@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.1",
-        "cboden/Ratchet": "0.2.*"
+        "symfony/framework-bundle": "~2.5",
+        "cboden/Ratchet": "0.3.*"
     },
     "autoload": {
         "psr-0": { "JDare\\ClankBundle": "" }
